@@ -3,6 +3,7 @@ package camionlogistica
 import(
 	context "context"
 	colas "../../logistica/colas"
+	registroseguimiento "../../logistica/registroseguimiento"
 	//"golang.org/x/net/context"
 	//"golang.org/x/net/context"
 	//"log"
@@ -19,6 +20,7 @@ type Camion_Logistica_Server struct{
 	WaitSeconds int
 	CamionCount int
 	ColasPaquetes *colas.Colas
+	RegistrosSeguimientos *[]registroseguimiento.RegistroSeguimiento
 }
 
 func (cls *Camion_Logistica_Server) ReportarIntento(ctx context.Context,paquete *Paquete) (*Ok, error){

@@ -37,7 +37,7 @@ func main(){
 
 
 
-	pedido:=clienteLogistica.Pedido{
+	pedido1:=clienteLogistica.Pedido{
 		IDPedido: "aaa",
 		NombreProducto: "bbb",
 		ValorProducto: 32,
@@ -46,16 +46,74 @@ func main(){
 		Origen: "Tienda A",
 	}
 
-	seguimiento, err:=c.HacerPedido(context.Background(), &pedido)
-
-	fmt.Println("OOOO")
-
-
-	if err!=nil{
-		log.Fatalf("something went wrong with the response 1")
-	} else {
-		fmt.Println("respuesta recibida")
-		fmt.Println(seguimiento.CodigoSeguimiento)
+	pedido2:=clienteLogistica.Pedido{
+		IDPedido: "ddd",
+		NombreProducto: "eee",
+		ValorProducto: 15,
+		Tipo: "Normal",
+		Destino: "Ciudad B",
+		Origen: "Tienda B",
 	}
+
+	pedido3	:=clienteLogistica.Pedido{
+		IDPedido: "fff",
+		NombreProducto: "ggg",
+		ValorProducto: 18,
+		Tipo: "Normal",
+		Destino: "Ciudad C",
+		Origen: "Tienda C",
+	}
+
+	pedido4:=clienteLogistica.Pedido{
+		IDPedido: "fff",
+		NombreProducto: "ggg",
+		ValorProducto: 40,
+		Tipo: "Prioritario",
+		Destino: "Ciudad D",
+		Origen: "Tienda D",
+	}
+
+	seguimiento, err:=c.HacerPedido(context.Background(), &pedido1)
+
+	if err==nil{
+		fmt.Println("pedido retorno seguimiento: ",seguimiento.CodigoSeguimiento)
+	} else {
+		log.Println("error: ",err)
+	}
+
+	seguimiento2, err:=c.HacerPedido(context.Background(), &pedido2)
+
+	if err==nil{
+		fmt.Println("pedido retorno seguimiento: ",seguimiento2.CodigoSeguimiento)
+	} else {
+		log.Println("error: ",err)
+	}
+
+	seguimiento3, err:=c.HacerPedido(context.Background(), &pedido3)
+
+	if err==nil{
+		fmt.Println("pedido retorno seguimiento: ",seguimiento3.CodigoSeguimiento)
+	} else {
+		log.Println("error: ",err)
+	}
+
+	seguimiento4, err:=c.HacerPedido(context.Background(), &pedido4)
+
+	if err==nil{
+		fmt.Println("pedido retorno seguimiento: ",seguimiento4.CodigoSeguimiento)
+	} else {
+		log.Println("error: ",err)
+	}
+
+
+	segreq:=clienteLogistica.Seguimiento{CodigoSeguimiento: 2}
+
+	estado, err:=c.SolicitarEstado(context.Background(), &segreq)
+
+	if err==nil{
+		fmt.Println("estado:",estado.Estado)
+	}
+
+	
 
 }

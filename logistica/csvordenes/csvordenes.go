@@ -13,7 +13,7 @@ type Orden struct {
 	IDPaquete string
 	Tipo string
 	Nombre string
-	Valor int
+	Valor int32
 	Origen string
 	Destino string
 	Seguimiento int
@@ -66,23 +66,16 @@ func(csvo *CSVOrdenes) CrearArchivo(){
 
 func(csvo *CSVOrdenes) AñadirOrden(orden Orden) {
 	//filas:=csvo.LeerTexto()
-	filaOrden:=[]string{orden.TimeStamp,orden.IDPaquete,orden.Tipo,orden.Nombre,strconv.Itoa(orden.Valor),orden.Origen,orden.Destino,strconv.Itoa(orden.Seguimiento)}
-	/*filasOrden=append(filasOrden,orden.TimeStamp)
-	filasOrden=append(filasOrden,orden.IDPaquete)
-	filasOrden=append(filasOrden,orden.Tipo)
-	filasOrden=append(filasOrden,orden.Nombre)
-	filasOrden=append(filasOrden,strconv.Itoa(orden.Valor))
-	filasOrden=append(filasOrden,orden.Origen)
-	filasOrden=append(filasOrden,orden.Destino)
-	filasOrden=append(filasOrden,strconv.Itoa(orden.Seguimiento))*/
+	filaOrden:=[]string{orden.TimeStamp,orden.IDPaquete,orden.Tipo,orden.Nombre,strconv.Itoa(int(orden.Valor)),orden.Origen,orden.Destino,strconv.Itoa(orden.Seguimiento)}
+	
+	dir, err := os.Getwd()
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("escribiendo desde: ",dir)
 
-	//filas=append(filas,filaOrden)
-
-
-	/*file, err := os.Create(csvo.FileName)
-    defer file.Close()
- 
-    */
+	fmt.Println("archivo: ",csvo.FileName)
+    
 	file, err:=os.OpenFile(csvo.FileName,os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
 
 	if err != nil {

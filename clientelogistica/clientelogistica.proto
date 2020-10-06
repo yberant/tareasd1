@@ -11,7 +11,7 @@ message Pedido{
     string IDPedido=1;
     string NombreProducto=2;
     int32 ValorProducto=3;
-    string Tipo=4;//retail, normal (pyme), prioritario (pyme)
+    string Tipo=4;//Retail, Normal (pyme), Prioritario (pyme)
     string Destino=5;
     string Origen=6;
 }

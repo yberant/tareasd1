@@ -1,1 +1,13 @@
 Timestamp,IDPaquete,Tipo,Nombre,Valor,Origen,Destino,Seguimiento
+6-Oct-2020 8:19PM,aaa,Retail,bbb,32,Tienda A,Ciudad A,0
+6-Oct-2020 8:19PM,ddd,Normal,eee,15,Tienda B,Ciudad B,1
+6-Oct-2020 8:19PM,fff,Normal,ggg,18,Tienda C,Ciudad C,2
+6-Oct-2020 8:19PM,fff,Prioritario,ggg,40,Tienda D,Ciudad D,3
+6-Oct-2020 8:19PM,aaa,Retail,bbb,32,Tienda A,Ciudad A,0
+6-Oct-2020 8:19PM,ddd,Normal,eee,15,Tienda B,Ciudad B,4
+6-Oct-2020 8:19PM,fff,Normal,ggg,18,Tienda C,Ciudad C,5
+6-Oct-2020 8:19PM,fff,Prioritario,ggg,40,Tienda D,Ciudad D,6
+6-Oct-2020 8:20PM,aaa,Retail,bbb,32,Tienda A,Ciudad A,0
+6-Oct-2020 8:20PM,ddd,Normal,eee,15,Tienda B,Ciudad B,7
+6-Oct-2020 8:20PM,fff,Normal,ggg,18,Tienda C,Ciudad C,8
+6-Oct-2020 8:20PM,fff,Prioritario,ggg,40,Tienda D,Ciudad D,9

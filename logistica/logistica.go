@@ -11,6 +11,7 @@ import (
 	"time"
 	csvo "./csvordenes"
 	colas "./colas"
+	registroseguimiento "./registroseguimiento"
     //"strings"
 )
 
@@ -20,7 +21,8 @@ var(
 	waitSeconds int
 	seguiActual int
 	colasPaquetes colas.Colas
-	cvsordenes csvo.CSVOrdenes
+	csvOrdenes csvo.CSVOrdenes
+	registrosSeguimientos []registroseguimiento.RegistroSeguimiento
 )
 
 
@@ -52,12 +54,15 @@ func ListenClientes(clientPort int){
 	} else{
 		fmt.Println("Escuchado clientes desde: ",IPAddr+portstring)
 	}
+
+	//fmt.Println("agregando colas paquetes ",colasPaquetes)
 		
 
 	s:=clienteLogistica.Cliente_Logistica_Server{
-		CsvOrdenes: &cvsordenes,
+		CsvOrdenes: &csvOrdenes,
 		SeguimientoActual: &seguiActual,
 		ColasPedidos: &colasPaquetes,
+		RegistrosSeguimientos: &registrosSeguimientos,
 	}
 	
 
@@ -84,9 +89,13 @@ func EscucharCamion (camionPort int, camionCount int){
 	} else{
 		fmt.Println("Escuchado a un camion desde: ",IPAddr+portstring)
 	}
-		
 
-	s:=camionLogistica.Camion_Logistica_Server{WaitSeconds: waitSeconds, CamionCount: camionCount, ColasPaquetes:colasPaquetes}
+	s:=camionLogistica.Camion_Logistica_Server{
+		WaitSeconds: waitSeconds,
+		CamionCount: camionCount, 
+		ColasPaquetes: &colasPaquetes,
+		RegistrosSeguimientos:&registrosSeguimientos,
+	}
 
 
 	grpcServer:=grpc.NewServer()
@@ -128,19 +137,25 @@ func AñadirCamion(camionCount int){
 
 
 func main(){
-
+	fmt.Println("A")
 	//creacion de csv
-	csvOrdenes:=&csvo.CSVOrdenes{FileName: "logistica/logs.csv"}
+	csvOrdenes=csvo.CSVOrdenes{FileName: "logistica/logs.csv"}
 	csvOrdenes.CrearArchivo()
 
+	//creacion de registro de seguimiento
+	registrosSeguimientos=[]registroseguimiento.RegistroSeguimiento{}
+
+	_ = registrosSeguimientos
+
 	//creacion de colas
-	colasPaquetes:=colas.Colas{
+	colasPaquetes=colas.Colas{
 		ColaNormal: &([]colas.Paquete{}),
 		ColaPrioritaria: &([]colas.Paquete{}),
 		ColaRetail: &([]colas.Paquete{}),
 	}
 
 	_ = colasPaquetes
+	colasPaquetes.ImprimirColas()
 	//colasPaquetes.ImprimirColas()
 
 	seguiActual=1;

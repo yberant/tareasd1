@@ -2,6 +2,7 @@ package camionlogistica
 
 import(
 	context "context"
+	colas "../../logistica/colas"
 	//"golang.org/x/net/context"
 	//"golang.org/x/net/context"
 	//"log"
@@ -16,7 +17,8 @@ Ojo con camionlogistica.pb.go, ahí se definen:
 
 type Camion_Logistica_Server struct{
 	WaitSeconds int
-	
+	CamionCount int
+	ColasPaquetes *colas.Colas
 }
 
 func (cls *Camion_Logistica_Server) ReportarIntento(ctx context.Context,paquete *Paquete) (*Ok, error){
@@ -28,5 +30,21 @@ func (cls *Camion_Logistica_Server) AsignarPaquetes(ctx context.Context,camion *
 }
 
 func (cls *Camion_Logistica_Server) RegistrarCamion(ctx context.Context, ok *Ok)  (*Camion, error){
-	return &Camion{IDCamion:"0", TipoCamion: "todavia no se implementa esto xd"}, nil
+	
+	var tipoCamion, idCamion string
+	switch cls.CamionCount{
+	case 0:
+		tipoCamion="Normal"
+		idCamion="Camion A"
+	case 1:
+		tipoCamion="Retail"
+		idCamion="Camion B"
+	case 2:
+		tipoCamion="Retail"
+		idCamion="Camion C"
+	}
+	
+	
+	
+	return &Camion{IDCamion:idCamion, TipoCamion: tipoCamion}, nil
 }

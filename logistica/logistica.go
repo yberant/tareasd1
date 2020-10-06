@@ -9,6 +9,8 @@ import (
 	clienteLogistica "../clientelogistica/clientelogistica"
 	camionLogistica "../camionlogistica/camionlogistica"
 	"time"
+	csvo "./csvordenes"
+	colas "./colas"
     //"strings"
 )
 
@@ -16,6 +18,9 @@ import (
 var(
 	IPAddr string
 	waitSeconds int
+	seguiActual int
+	colasPaquetes colas.Colas
+	cvsordenes csvo.CSVOrdenes
 )
 
 
@@ -37,7 +42,6 @@ func getIPAddr() string{
     return ""
 }
 
-//jijiji
 func ListenClientes(clientPort int){
 	
 	
@@ -50,7 +54,12 @@ func ListenClientes(clientPort int){
 	}
 		
 
-	s:=clienteLogistica.Cliente_Logistica_Server{}
+	s:=clienteLogistica.Cliente_Logistica_Server{
+		CsvOrdenes: &cvsordenes,
+		SeguimientoActual: &seguiActual,
+		ColasPedidos: &colasPaquetes,
+	}
+	
 
 
 	grpcServer:=grpc.NewServer()
@@ -67,7 +76,7 @@ func ListenClientes(clientPort int){
 	
 }
 
-func ListenCamiones (camionPort int){
+func EscucharCamion (camionPort int, camionCount int){
 	portstring:=":"+strconv.Itoa(camionPort)//por ejemplo, ":9000"
 	lis, err := net.Listen("tcp", portstring)
 	if err!=nil{
@@ -77,7 +86,7 @@ func ListenCamiones (camionPort int){
 	}
 		
 
-	s:=camionLogistica.Camion_Logistica_Server{WaitSeconds: waitSeconds}
+	s:=camionLogistica.Camion_Logistica_Server{WaitSeconds: waitSeconds, CamionCount: camionCount, ColasPaquetes:colasPaquetes}
 
 
 	grpcServer:=grpc.NewServer()
@@ -93,7 +102,8 @@ func ListenCamiones (camionPort int){
 
 }
 
-func RegistrarCamion(camionCount int){
+//Escucha a un camión
+func AñadirCamion(camionCount int){
 	enterNumber:
 		switch camionCount{
 		case 0:
@@ -109,7 +119,7 @@ func RegistrarCamion(camionCount int){
 			fmt.Println("numero inválido")
 			goto enterNumber
 	} else {
-		go ListenCamiones(port)	
+		go EscucharCamion(port, camionCount)	
 		time.Sleep(100*time.Millisecond)
 	}	
 }
@@ -118,15 +128,31 @@ func RegistrarCamion(camionCount int){
 
 
 func main(){
-	fmt.Println("a")
+
+	//creacion de csv
+	csvOrdenes:=&csvo.CSVOrdenes{FileName: "logistica/logs.csv"}
+	csvOrdenes.CrearArchivo()
+
+	//creacion de colas
+	colasPaquetes:=colas.Colas{
+		ColaNormal: &([]colas.Paquete{}),
+		ColaPrioritaria: &([]colas.Paquete{}),
+		ColaRetail: &([]colas.Paquete{}),
+	}
+
+	_ = colasPaquetes
+	//colasPaquetes.ImprimirColas()
+
+	seguiActual=1;
+
 	IPAddr=getIPAddr()
 	//log.Println(IpAddr)
 	fmt.Println(IPAddr)
 
 	//se registran los 3 camiones
-	RegistrarCamion(0)
-	RegistrarCamion(1)
-	RegistrarCamion(2)
+	AñadirCamion(0)
+	AñadirCamion(1)
+	AñadirCamion(2)
 	
 	for {
 		fmt.Println("comandos:")

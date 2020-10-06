@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package camionlogistica;
+
+service CamionLogistica{
+
+    //En caso de que el intento haya sido exitoso, Estado="Entregado".
+    //En el caso de que los 3 intentos hayan fallado, el paquete se manda
+    //con estado="No entregado".
+    //retorna un mensaje dummy "Ok"
+    rpc ReportarIntento(Paquete) returns (Ok) {}
+
+    //Logística asigna paquetes al camión, tras recibir la info de los paquetes
+    //entregados (o no entregados) y reportar al servicio financiero.
+    rpc AsignarPaquetes(Camion) returns (ParPaquetes) {}
+
+    //una vez se inicializa un camion, se tiene que ejecutar esta funcion una y solo una vez
+    //logistica entregará al camion informacion: ID del camion y el tipo (según el puerto al que se conecte)
+    rpc RegistrarCamion(Ok) returns (Camion) {}
+}
+
+
+
+message Paquete{
+    string IDPaquete=1;
+    string CodigoSeguimiento=2;
+    string Tipo=3;//retail, normal (pyme), prioritario (pyme)
+    int32 ValorProducto=4;
+    int32 Intentos=5;
+    string Estado=6;//"En bodega", "En Camino", "Entregado", "No entregado"
+    string Origen=7;
+    string Destino=8;
+}
+
+//cambio de planes, en lugar de retornar un stream de 2 paquetes, se retornan los
+//2 paquetes al mismo tiempo en esta estructura.
+//Son sólo 2 paquetes después de todo.
+message ParPaquetes{
+    Paquete Paquete1=1;
+    Paquete Paquete2=2;
+}
+
+//tipo de mensaje "dummy"
+message Ok{
+    int32 Ok=1;
+}
+
+message Camion{
+    string IDCamion=1;
+    string TipoCamion=2;
+}
+
+

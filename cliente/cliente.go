@@ -18,7 +18,7 @@ func main(){
 		fmt.Println("ingrese dirección IP del servidor (en el formato: 255.255.255.255)")
 		var IPaddr string
 		fmt.Scanln(&IPaddr)
-		fmt.Println("ingrese el numero de puerto en el que el servidor está escuchando")
+		fmt.Println("ingrese el numero de puerto en el que el logística está escuchando")
 		var PortNum string
 		fmt.Scanln(&PortNum)
 
@@ -113,6 +113,9 @@ func main(){
 	if err==nil{
 		fmt.Println("estado:",estado.Estado)
 	}
+
+
+
 
 	
 

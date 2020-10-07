@@ -4,6 +4,7 @@ import(
 	context "context"
 	colas "../../logistica/colas"
 	registroseguimiento "../../logistica/registroseguimiento"
+	"fmt"
 	//"golang.org/x/net/context"
 	//"golang.org/x/net/context"
 	//"log"
@@ -24,6 +25,19 @@ type Camion_Logistica_Server struct{
 }
 
 func (cls *Camion_Logistica_Server) ReportarIntento(ctx context.Context,paquete *Paquete) (*Ok, error){
+
+	for i,reg:=range(*(cls.RegistrosSeguimientos)){
+		if paquete.GetIDPaquete()==reg.IDPaquete{
+			(*cls.RegistrosSeguimientos)[i].Estado=paquete.GetEstado()
+			(*cls.RegistrosSeguimientos)[i].CantidadIntentos=int(paquete.GetIntentos())
+			//TODO: COMUNICAR A FINANCIERO POR RABBITMQ!!!
+			fmt.Println("registros actualizados: ",(*cls.RegistrosSeguimientos))
+			break
+
+		}
+	}
+	
+
 	return &Ok{Ok:0}, nil
 }
 

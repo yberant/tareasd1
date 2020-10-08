@@ -38,8 +38,8 @@ message Paquete{
 message ParPaquetes{
     Paquete Paquete1=1;
     Paquete Paquete2=2;
-    string TipoCamion=3;
-    int32 TiempoEspera=4;
+    Camion Camion=3;
+    
 }
 
 //tipo de mensaje "dummy"
@@ -50,6 +50,7 @@ message Ok{
 message Camion{
     string IDCamion=1;
     string TipoCamion=2;
+    int32 TiempoEspera=3;
 }
 
 

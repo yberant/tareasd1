@@ -1,16 +1,69 @@
 package main
 
 import(
-	//"log"
-	//context "golang.org/x/net/context"
+	"log"
+	context "golang.org/x/net/context"
 	grpc "google.golang.org/grpc"
-	//clienteLogistica "../clientelogistica/clientelogistica"
+	clienteLogistica "../clientelogistica/clientelogistica"
 	"fmt"
 	"strconv"
 	csvventas "../csvventas"
+	"strings"
 	"time"
 	//"io"
 )
+
+func StringToPedido(fila []string)(clienteLogistica.Pedido){
+	var pedido clienteLogistica.Pedido
+
+	if TipoCliente=="Retail"{
+
+		val,err:=strconv.Atoi(fila[2])
+		if err!=nil{
+			log.Fatalf("Error en columna de valor: %s\n", err.Error())
+		}
+		pedido=clienteLogistica.Pedido{
+			IDPedido:fila[0],
+			NombreProducto:fila[1],
+			ValorProducto:int32(val),
+			Tipo: "Retail",
+			Origen: fila[3],
+			Destino: fila[4],
+		}
+	} else {//tipo Pyme
+
+		var tipoproducto string
+		if fila[5]=="0"{
+			tipoproducto="Normal"
+		} else {
+			tipoproducto="Prioritario"
+		}
+		val,err:=strconv.Atoi(fila[2])
+		if err!=nil{
+			log.Fatalf("Error en columna de valor: %s\n", err.Error())
+		}
+
+		var origen string
+		if f:=strings.Split(fila[4],"-");len(f)==2{//ej: "casa-A"
+			origen="tienda-"+f[1]//ej: "tienda-A"
+		} else {
+			origen="tienda-?"
+		}
+		pedido=clienteLogistica.Pedido{
+			IDPedido:fila[0],
+			NombreProducto:fila[1],
+			ValorProducto:int32(val),
+			Tipo: tipoproducto,
+			Origen: origen,
+			Destino: fila[4],
+		}
+	}
+
+	return pedido
+
+}
+
+var TipoCliente string
 
 func main(){
 
@@ -25,37 +78,28 @@ func main(){
 		TiemposPedidos=tt
 	}
 
-	var CsvVentas csvventas.CSVVentas
-
-
 	var Mode string
 	var filas [][]string
+	var CsvVentas csvventas.CSVVentas
 	mode:
 		fmt.Println("¿Que tipo de cliente es usted? (ingrese 0 o 1)")
 		fmt.Println("0: Pyme")
 		fmt.Println("1: Retail")
 		fmt.Scanln(&Mode)
 	if(Mode=="0"){
-		Mode="Pyme"
-		CsvVentas:=csvventas.CSVVentas{NombreArchivo:"cliente/pymes.csv", TipoCliente:"Pyme"}
-		CsvVentas.LeerPedidos()
+		TipoCliente="Pyme"
+		CsvVentas=csvventas.CSVVentas{NombreArchivo:"cliente/pymes.csv"}
 		} else if (Mode=="1") {
-		Mode="Retail"
-		CsvVentas:=csvventas.CSVVentas{NombreArchivo:"cliente/retail.csv", TipoCliente:"Retail"}
-		CsvVentas.LeerPedidos()
+		TipoCliente="Retail"
+		CsvVentas=csvventas.CSVVentas{NombreArchivo:"cliente/retail.csv"}
 	} else {
 		fmt.Println("error, ingrese de nuevo")
 		goto mode
 	}
+	fmt.Println("l")
+	filas=CsvVentas.LeerPedidos()
+	fmt.Println("a")
 
-	
-	//esto debería ir después
-	for _,fila:=range(filas){
-		
-		paquete:=CsvVentas.Pedido(fila)
-		fmt.Println(paquete)
-		time.Sleep(time.Second*time.Duration(TiemposPedidos))
-	}
 
 	//var conn *grpc.ClientConn
 	//192.168.1.17:9000
@@ -78,7 +122,23 @@ func main(){
 	}
 
 
-	//c:=clienteLogistica.NewClienteLogisticaClient(conn)
+	c:=clienteLogistica.NewClienteLogisticaClient(conn)
+
+	//esto debería ir después
+	for i,fila:=range(filas){
+		if i==0{
+			continue//headers del csv no se cuentan
+		}
+		//fmt.Println("fila de largo ",len(fila),": ",fila," ",i)
+		pedido:=StringToPedido(fila)
+		fmt.Println("\nrealizando pedido: ",pedido)
+		seg, err:=c.HacerPedido(context.Background(),&pedido)
+		if err!=nil{
+			log.Fatalf("Reuqest error: %s",err)
+		}
+		fmt.Println("codigo de seguimiento recibido por logistica: ",seg.CodigoSeguimiento)
+		time.Sleep(time.Second*time.Duration(TiemposPedidos))
+	}
 
 
 	/*

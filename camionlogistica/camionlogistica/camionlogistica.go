@@ -49,7 +49,6 @@ func (cls *Camion_Logistica_Server) ReportarIntento(ctx context.Context,paquete 
 	Básicamente me hubiese dado error por loop de importaciones, por lo que decidí que se trabajara desde una estructura de paquetes
 	"independiente", y paf! nació el package colas colas.Paquete 
 	
-	Hay una razón más que justificada de porqué hice esto, pero no se explicarla bien. Tiene que ver con los loops de importación.
 
 	De todos modos, esta función es una conversión entre colas.Paquete a (camionlogistica.)Paquete
 */
@@ -68,6 +67,8 @@ func ColaspaqToPaq(colasPaq colas.Paquete)(Paquete){
 }
 
 func (cls *Camion_Logistica_Server) AsignarPaquetes(ctx context.Context,parpaquetes *ParPaquetes) (*ParPaquetes, error){
+	
+	
 	
 	var PaqRes1,PaqRes2 Paquete
 
@@ -150,6 +151,7 @@ func (cls *Camion_Logistica_Server) AsignarPaquetes(ctx context.Context,parpaque
 	//actualiza los estados en el registro de memoria a "En Camino"
 	cls.ReportarIntento(context.Background(),&PaqRes1)
 	cls.ReportarIntento(context.Background(),&PaqRes2)
+
 	return &ParPaquetes{Paquete1:&PaqRes1, Paquete2:&PaqRes2}, nil
 }
 
@@ -167,8 +169,5 @@ func (cls *Camion_Logistica_Server) RegistrarCamion(ctx context.Context, ok *Ok)
 		tipoCamion="Retail"
 		idCamion="Camion C"
 	}
-	
-	
-	
 	return &Camion{IDCamion:idCamion, TipoCamion: tipoCamion}, nil
 }

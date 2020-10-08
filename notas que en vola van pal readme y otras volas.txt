@@ -9,3 +9,5 @@ maquina de logistica debe contener carpetas:
 - /clientelogistica
 
 se debe ejecutar desde la carpeta que contiene a logistica, clientelogistica, financiero,camionlogistica, camion, etc
+
+

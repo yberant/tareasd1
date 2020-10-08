@@ -48,7 +48,32 @@ func main(){
 	fmt.Println("este camion es de tipo ",tipoCamion)
 
 
-		
+	paquete:=camionLogistica.Paquete{
+		IDPaquete:"dde",
+		CodigoSeguimiento:"5",
+		Tipo:"Normal",
+		ValorProducto:0,
+		Intentos:2,
+		Estado:"En Camino",
+		Origen:"Tienda A",
+		Destino:"Casa A",
+	}
+
+	ok2,err:=c.ReportarIntento(context.Background(),&paquete)
+
+	if err!=nil{
+		log.Println("error: ",err)
+		return
+	} 
+	fmt.Println(ok2)
+	/*string IDPaquete=1;
+    string CodigoSeguimiento=2;
+    string Tipo=3;//retail, normal (pyme), prioritario (pyme)
+    int32 ValorProducto=4;
+    int32 Intentos=5;
+    string Estado=6;//"En bodega", "En Camino", "Entregado", "No entregado"
+    string Origen=7;
+    string Destino=8;*/
 
 
 }

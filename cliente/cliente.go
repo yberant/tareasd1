@@ -1,17 +1,62 @@
 package main
 
 import(
-	"log"
-	//firstGrpc "../interfaces"
-	context "golang.org/x/net/context"
+	//"log"
+	//context "golang.org/x/net/context"
 	grpc "google.golang.org/grpc"
-	clienteLogistica "../clientelogistica/clientelogistica"
+	//clienteLogistica "../clientelogistica/clientelogistica"
 	"fmt"
-	//"strconv"
+	"strconv"
+	csvventas "../csvventas"
+	"time"
 	//"io"
 )
 
 func main(){
+
+	tiempopedidos:
+		fmt.Println("ingrese tiempo entre pedidos en segundos")
+		var TiempoPedidosString string
+		fmt.Scanln(&TiempoPedidosString)
+	var TiemposPedidos int
+	if tt,err:=strconv.Atoi(TiempoPedidosString);err!=nil{
+		goto tiempopedidos
+	} else {
+		TiemposPedidos=tt
+	}
+
+	var CsvVentas csvventas.CSVVentas
+
+
+	var Mode string
+	var filas [][]string
+	mode:
+		fmt.Println("¿Que tipo de cliente es usted? (ingrese 0 o 1)")
+		fmt.Println("0: Pyme")
+		fmt.Println("1: Retail")
+		fmt.Scanln(&Mode)
+	if(Mode=="0"){
+		Mode="Pyme"
+		CsvVentas:=csvventas.CSVVentas{NombreArchivo:"cliente/pymes.csv", TipoCliente:"Pyme"}
+		CsvVentas.LeerPedidos()
+		} else if (Mode=="1") {
+		Mode="Retail"
+		CsvVentas:=csvventas.CSVVentas{NombreArchivo:"cliente/retail.csv", TipoCliente:"Retail"}
+		CsvVentas.LeerPedidos()
+	} else {
+		fmt.Println("error, ingrese de nuevo")
+		goto mode
+	}
+
+	
+	//esto debería ir después
+	for _,fila:=range(filas){
+		
+		paquete:=CsvVentas.Pedido(fila)
+		fmt.Println(paquete)
+		time.Sleep(time.Second*time.Duration(TiemposPedidos))
+	}
+
 	//var conn *grpc.ClientConn
 	//192.168.1.17:9000
 	entry:
@@ -33,10 +78,10 @@ func main(){
 	}
 
 
-	c:=clienteLogistica.NewClienteLogisticaClient(conn)
+	//c:=clienteLogistica.NewClienteLogisticaClient(conn)
 
 
-
+	/*
 	pedido1:=clienteLogistica.Pedido{
 		IDPedido: "aaa",
 		NombreProducto: "bbb",
@@ -113,7 +158,7 @@ func main(){
 	if err==nil{
 		fmt.Println("estado:",estado.Estado)
 	}
-
+	*/
 
 
 

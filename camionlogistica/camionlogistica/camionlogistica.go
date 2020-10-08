@@ -152,7 +152,7 @@ func (cls *Camion_Logistica_Server) AsignarPaquetes(ctx context.Context,parpaque
 	cls.ReportarIntento(context.Background(),&PaqRes1)
 	cls.ReportarIntento(context.Background(),&PaqRes2)
 
-	return &ParPaquetes{Paquete1:&PaqRes1, Paquete2:&PaqRes2}, nil
+	return &ParPaquetes{Paquete1:&PaqRes1, Paquete2:&PaqRes2, Camion:parpaquetes.GetCamion()}, nil
 }
 
 func (cls *Camion_Logistica_Server) RegistrarCamion(ctx context.Context, ok *Ok)  (*Camion, error){

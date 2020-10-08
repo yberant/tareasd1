@@ -40,6 +40,31 @@ func main(){
 	//lo primero que hay que hacer obligatoriamente. Se nos asigna el tipo de camión segun el puerto
 	CamionRes, err:=c.RegistrarCamion(context.Background(),&ok)
 
+	/*
+
+	var tiempoespera int
+	fmt.println("ingresar tiempo espera...")
+	scanf(&tiempoespera)
+
+	MyCamion:=camionLogistica.Camion{
+		IDCamion: CamionRes.GetIDCamion(),
+		TipoCamion: CamionRes.GetTipoCamion(),
+		TiempoEspera: int32(tiempoespera)
+	}
+
+	var parpaquetes camionLogistica.ParPaquetes{
+		Camion: MyCamion
+	}
+
+	for{
+		parpaquetes=c.AsignarPaquetes(context.Background(),&parpaquetes)
+		... hacer intento ...
+	}
+
+	
+
+	*/
+
 	if err!=nil{
 		log.Println("error: ",err)
 		return

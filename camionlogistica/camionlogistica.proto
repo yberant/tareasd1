@@ -12,7 +12,7 @@ service CamionLogistica{
 
     //Logística asigna paquetes al camión, tras recibir la info de los paquetes
     //entregados (o no entregados) y reportar al servicio financiero.
-    rpc AsignarPaquetes(Camion) returns (ParPaquetes) {}
+    rpc AsignarPaquetes(ParPaquetes) returns (ParPaquetes) {}
 
     //una vez se inicializa un camion, se tiene que ejecutar esta funcion una y solo una vez
     //logistica entregará al camion informacion: ID del camion y el tipo (según el puerto al que se conecte)
@@ -38,6 +38,7 @@ message Paquete{
 message ParPaquetes{
     Paquete Paquete1=1;
     Paquete Paquete2=2;
+    string TipoCamion=3;
 }
 
 //tipo de mensaje "dummy"

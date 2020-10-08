@@ -39,6 +39,7 @@ message ParPaquetes{
     Paquete Paquete1=1;
     Paquete Paquete2=2;
     string TipoCamion=3;
+    int32 TiempoEspera=4;
 }
 
 //tipo de mensaje "dummy"

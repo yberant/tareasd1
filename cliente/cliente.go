@@ -47,7 +47,7 @@ func main(){
 	}
 
 	pedido2:=clienteLogistica.Pedido{
-		IDPedido: "ddd",
+		IDPedido: "dde",
 		NombreProducto: "eee",
 		ValorProducto: 15,
 		Tipo: "Normal",
@@ -56,7 +56,7 @@ func main(){
 	}
 
 	pedido3	:=clienteLogistica.Pedido{
-		IDPedido: "fff",
+		IDPedido: "fgf",
 		NombreProducto: "ggg",
 		ValorProducto: 18,
 		Tipo: "Normal",
@@ -65,7 +65,7 @@ func main(){
 	}
 
 	pedido4:=clienteLogistica.Pedido{
-		IDPedido: "fff",
+		IDPedido: "efe",
 		NombreProducto: "ggg",
 		ValorProducto: 40,
 		Tipo: "Prioritario",

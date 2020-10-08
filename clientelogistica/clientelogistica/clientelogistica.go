@@ -2,9 +2,9 @@ package clientelogistica
 
 import(
 	context "context"
-	csvo "../../logistica/csvordenes"
-	colas "../../logistica/colas"
-	registroseguimiento "../../logistica/registroseguimiento"
+	csvo "../../csvordenes"
+	colas "../../colas"
+	registroseguimiento "../../registroseguimiento"
 	"time"
 	"fmt"
 
@@ -21,6 +21,19 @@ type Cliente_Logistica_Server struct{
 
 func(cls *Cliente_Logistica_Server)HacerPedido(ctx context.Context, pedido *Pedido) (*Seguimiento, error){
 	
+	
+
+	//crear codigo de seguimiento
+	var codigoSeguimiento int
+	if pedido.GetTipo()!="Retail"{
+		codigoSeguimiento=*(cls.SeguimientoActual)
+		//fmt.Println("codigo de seguimiento creado: ",codigoSeguimiento)
+		*(cls.SeguimientoActual)=*(cls.SeguimientoActual)+1//habria que poner un semaforo para asegurar que no hayan errores, pero filo
+	} else {
+		codigoSeguimiento=0
+		//fmt.Println("sin codigo de seguimiento creado: ",codigoSeguimiento)
+	}
+
 	//crear paquete
 	//fmt.Println("creando paquete")
 	paquete:=colas.Paquete{
@@ -30,20 +43,10 @@ func(cls *Cliente_Logistica_Server)HacerPedido(ctx context.Context, pedido *Pedi
 		Tipo: pedido.GetTipo(),
 		Destino: pedido.GetDestino(),
 		Origen: pedido.GetOrigen(),
+		CodigoSeguimiento: codigoSeguimiento,
 	}
 	//fmt.Println("paquete: ",paquete)
 
-	//crear codigo de seguimiento
-	var codigoSeguimiento int
-	if paquete.Tipo!="Retail"{
-		codigoSeguimiento=*(cls.SeguimientoActual)
-		//fmt.Println("codigo de seguimiento creado: ",codigoSeguimiento)
-		*(cls.SeguimientoActual)=*(cls.SeguimientoActual)+1//habria que poner un semaforo para asegurar que no hayan errores, pero filo
-	} else {
-		codigoSeguimiento=0
-		//fmt.Println("sin codigo de seguimiento creado: ",codigoSeguimiento)
-
-	}
 	
 	
 	//ingresar al registro de seguimientos
@@ -68,16 +71,16 @@ func(cls *Cliente_Logistica_Server)HacerPedido(ctx context.Context, pedido *Pedi
 	//ingresar a la cola
 	switch paquete.Tipo{
 	case "Normal":
-		fmt.Println("agregando a cola normal")
+		//fmt.Println("agregando a cola normal")
 		(*(*(*cls).ColasPedidos).ColaNormal)=append((*(*(*cls).ColasPedidos).ColaNormal),paquete)
 	case "Prioritario":
-		fmt.Println("agregando a cola prioritaria")
+		//fmt.Println("agregando a cola prioritaria")
 		(*(*(*cls).ColasPedidos).ColaPrioritaria)=append((*(*(*cls).ColasPedidos).ColaPrioritaria),paquete)
 	case "Retail":
-		fmt.Println("agregando a cola retail")
+		//fmt.Println("agregando a cola retail")
 		(*(*(*cls).ColasPedidos).ColaRetail)=append((*(*(*cls).ColasPedidos).ColaRetail),paquete)
 	}
-	cls.ImprimirColas()
+	//cls.ImprimirColas()
 
 
 	//ingresar al csv, una orden nueva:

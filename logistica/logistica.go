@@ -9,9 +9,9 @@ import (
 	clienteLogistica "../clientelogistica/clientelogistica"
 	camionLogistica "../camionlogistica/camionlogistica"
 	"time"
-	csvo "./csvordenes"
-	colas "./colas"
-	registroseguimiento "./registroseguimiento"
+	csvo "../csvordenes"
+	colas "../colas"
+	registroseguimiento "../registroseguimiento"
     //"strings"
 )
 
@@ -91,7 +91,6 @@ func EscucharCamion (camionPort int, camionCount int){
 	}
 
 	s:=camionLogistica.Camion_Logistica_Server{
-		WaitSeconds: waitSeconds,
 		CamionCount: camionCount, 
 		ColasPaquetes: &colasPaquetes,
 		RegistrosSeguimientos:&registrosSeguimientos,
@@ -137,7 +136,6 @@ func AñadirCamion(camionCount int){
 
 
 func main(){
-	fmt.Println("A")
 	//creacion de csv
 	csvOrdenes=csvo.CSVOrdenes{FileName: "logistica/logs.csv"}
 	csvOrdenes.CrearArchivo()
@@ -162,7 +160,7 @@ func main(){
 
 	IPAddr=getIPAddr()
 	//log.Println(IpAddr)
-	fmt.Println(IPAddr)
+	fmt.Println("dirección IP de logística: ",IPAddr)
 
 	//se registran los 3 camiones
 	AñadirCamion(0)

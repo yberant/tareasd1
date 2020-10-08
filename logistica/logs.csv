@@ -1,1 +1,5 @@
 Timestamp,IDPaquete,Tipo,Nombre,Valor,Origen,Destino,Seguimiento
+7-Oct-2020 8:41PM,aaa,Retail,bbb,32,Tienda A,Ciudad A,0
+7-Oct-2020 8:41PM,dde,Normal,eee,15,Tienda B,Ciudad B,1
+7-Oct-2020 8:41PM,fgf,Normal,ggg,18,Tienda C,Ciudad C,2
+7-Oct-2020 8:41PM,efe,Prioritario,ggg,40,Tienda D,Ciudad D,3

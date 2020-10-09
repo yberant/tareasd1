@@ -11,3 +11,28 @@ maquina de logistica debe contener carpetas:
 se debe ejecutar desde la carpeta que contiene a logistica, clientelogistica, financiero,camionlogistica, camion, etc
 
 
+maquinas y sus paquetes:
+
+camion:
+    - camion/
+    - camionlogistica/
+    - registroseguimiento/
+    - colas/
+    - ???
+
+cliete:
+    - cliente/
+    - clientelogistica/
+    - csvventas/
+    - csvordenes/
+    - colas/
+    - registroseguimiento/
+
+logistica:
+    - logistica/
+    - clientelogistica/
+    - camionlogistica/
+    - csvordenes/
+    - colas/
+    - registroseguimiento/
+    

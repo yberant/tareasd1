@@ -34,7 +34,7 @@ type Colas struct{
 
 func (cls *Colas) ImprimirColas(){
 	fmt.Println("colas")
-	fmt.Println("normal: ",*(*cls).ColaNormal)
-	fmt.Println("priotritaria: ",*(*cls).ColaPrioritaria)
-	fmt.Println("retail: ",*(*cls).ColaRetail)
+	fmt.Println("normal: ",len(*(*cls).ColaNormal))
+	fmt.Println("priotritaria: ",len(*(*cls).ColaPrioritaria))
+	fmt.Println("retail: ",len(*(*cls).ColaRetail))
 }

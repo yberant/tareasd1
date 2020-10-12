@@ -85,7 +85,7 @@ func main(){
 		fmt.Println("¿Que tipo de cliente es usted? (ingrese 0 o 1)")
 		fmt.Println("0: Pyme")
 		fmt.Println("1: Retail")
-		fmt.Scanln(&Mode)
+		//fmt.Scanln(&Mode)
 	if(Mode=="0"){
 		TipoCliente="Pyme"
 		CsvVentas=csvventas.CSVVentas{NombreArchivo:"cliente/pymes.csv"}
@@ -96,9 +96,7 @@ func main(){
 		fmt.Println("error, ingrese de nuevo")
 		goto mode
 	}
-	fmt.Println("l")
 	filas=CsvVentas.LeerPedidos()
-	fmt.Println("a")
 
 
 	//var conn *grpc.ClientConn

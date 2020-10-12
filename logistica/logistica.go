@@ -153,7 +153,7 @@ func main(){
 	}
 
 	_ = colasPaquetes
-	colasPaquetes.ImprimirColas()
+	//colasPaquetes.ImprimirColas()
 	//colasPaquetes.ImprimirColas()
 
 	seguiActual=1;

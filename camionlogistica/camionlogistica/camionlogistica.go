@@ -36,10 +36,26 @@ func (cls *Camion_Logistica_Server) ReportarIntento(ctx context.Context,paquete 
 
 		}
 	}
-	
-
 	return &Ok{Ok:0}, nil
 }
+
+func (cls *Camion_Logistica_Server) RegistrarEntrega(idCamion string, paquete *Paquete){
+
+	if paquete.GetIDPaquete()==""{
+		return
+	}
+
+	for i,reg:=range(*(cls.RegistrosSeguimientos)){
+		if paquete.GetIDPaquete()==reg.IDPaquete{
+			(*cls.RegistrosSeguimientos)[i].IDCamion=idCamion
+			break
+
+		}
+	}
+	return
+}
+
+
 
 /*
 	Mira, basicamente creé una estructura "colas.Paquete" independiente de la estructura 
@@ -78,6 +94,7 @@ func (cls *Camion_Logistica_Server) AsignarPaquetes(ctx context.Context,parpaque
 		for{
 			//cola prioritaria tiene prioridad
 			if len(*((*(cls.ColasPaquetes)).ColaPrioritaria))>=1{
+
 				PaqRes1,*((*(cls.ColasPaquetes)).ColaPrioritaria)=ColaspaqToPaq((*((*(cls.ColasPaquetes)).ColaPrioritaria))[0]), (*((*(cls.ColasPaquetes)).ColaPrioritaria))[1:]
 				break
 			}
@@ -148,8 +165,16 @@ func (cls *Camion_Logistica_Server) AsignarPaquetes(ctx context.Context,parpaque
 		}
 	}
 
-	//actualiza los estados en el registro de memoria a "En Camino"
+	PaqRes1.Estado="En Camino"
+	if PaqRes2.IDPaquete!=""{
+		PaqRes2.Estado="En Camino"
+	}
+
+	//actualiza los estados en el registro de memoria, añadiendo el id del camion al que se le entregó y cambiando el estado a: "En Camino"
+	cls.RegistrarEntrega(parpaquetes.Camion.IDCamion,&PaqRes1)
 	cls.ReportarIntento(context.Background(),&PaqRes1)
+
+	cls.RegistrarEntrega(parpaquetes.Camion.IDCamion,&PaqRes2)
 	cls.ReportarIntento(context.Background(),&PaqRes2)
 
 	return &ParPaquetes{Paquete1:&PaqRes1, Paquete2:&PaqRes2, Camion:parpaquetes.GetCamion()}, nil

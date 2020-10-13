@@ -63,41 +63,49 @@ func StringToPedido(fila []string)(clienteLogistica.Pedido){
 
 }
 
+func ModoSeguimiento(){
+	fmt.Println("modo seguimiento!")
+	var codS string
+	var codigoSeguimiento int64
+	var seguimiento clienteLogistica.Seguimiento
+	for{
+		codigo:
+			fmt.Println("ingrese nuémro de seguimiento para solicitar")
+			fmt.Scanln(&codS)
+		if cs,err:=strconv.Atoi(codS);err!=nil{
+			fmt.Println("ingrese número valido")
+			goto codigo
+		} else {
+			codigoSeguimiento=int64(cs)
+		}
+		seguimiento=clienteLogistica.Seguimiento{
+			CodigoSeguimiento:codigoSeguimiento,
+		}
+		est,err:=c.SolicitarEstado(context.Background(),&seguimiento)
+
+		if err!=nil{
+			log.Fatalf("error en seguimiento recibido: %s",err)
+		}
+
+		estado:=est.Estado
+		if(estado=="No disponible"){
+			fmt.Println("codigo de seguimiento inválido")
+		} else if(estado=="No encontrado"){
+			fmt.Println("producto no encontrado, intente con otro código")
+		} else{
+			fmt.Println("estado del producto: ",estado)
+		}
+
+
+
+	}
+
+}
+
 var TipoCliente string
+var c clienteLogistica.ClienteLogisticaClient
 
 func main(){
-
-	tiempopedidos:
-		fmt.Println("ingrese tiempo entre pedidos en segundos")
-		var TiempoPedidosString string
-		fmt.Scanln(&TiempoPedidosString)
-	var TiemposPedidos int
-	if tt,err:=strconv.Atoi(TiempoPedidosString);err!=nil{
-		goto tiempopedidos
-	} else {
-		TiemposPedidos=tt
-	}
-
-	var Mode string
-	var filas [][]string
-	var CsvVentas csvventas.CSVVentas
-	mode:
-		fmt.Println("¿Que tipo de cliente es usted? (ingrese 0 o 1)")
-		fmt.Println("0: Pyme")
-		fmt.Println("1: Retail")
-		//fmt.Scanln(&Mode)
-	if(Mode=="0"){
-		TipoCliente="Pyme"
-		CsvVentas=csvventas.CSVVentas{NombreArchivo:"cliente/pymes.csv"}
-		} else if (Mode=="1") {
-		TipoCliente="Retail"
-		CsvVentas=csvventas.CSVVentas{NombreArchivo:"cliente/retail.csv"}
-	} else {
-		fmt.Println("error, ingrese de nuevo")
-		goto mode
-	}
-	filas=CsvVentas.LeerPedidos()
-
 
 	//var conn *grpc.ClientConn
 	//192.168.1.17:9000
@@ -119,8 +127,44 @@ func main(){
 		goto entry
 	}
 
+	c=clienteLogistica.NewClienteLogisticaClient(conn)
 
-	c:=clienteLogistica.NewClienteLogisticaClient(conn)
+	var Mode string
+	var filas [][]string
+	var CsvVentas csvventas.CSVVentas
+	mode:
+		fmt.Println("¿Que tipo de cliente es usted? (ingrese 0, 1 o 2)")
+		fmt.Println("0: Pyme")
+		fmt.Println("1: Retail")
+		fmt.Println("2: Seguidor")
+		fmt.Scanln(&Mode)
+	if(Mode=="0"){
+		TipoCliente="Pyme"
+		CsvVentas=csvventas.CSVVentas{NombreArchivo:"cliente/pymes.csv"}
+		} else if (Mode=="1") {
+		TipoCliente="Retail"
+		CsvVentas=csvventas.CSVVentas{NombreArchivo:"cliente/retail.csv"}
+		} else if (Mode=="2") {
+			ModoSeguimiento()
+	} else {
+		fmt.Println("error, ingrese de nuevo")
+		goto mode
+	}
+	if(Mode!="2"){
+		filas=CsvVentas.LeerPedidos()
+	}
+
+	tiempopedidos:
+		fmt.Println("ingrese tiempo entre pedidos en segundos")
+		var TiempoPedidosString string
+		fmt.Scanln(&TiempoPedidosString)
+	var TiemposPedidos int
+	if tt,err:=strconv.Atoi(TiempoPedidosString);err!=nil{
+		goto tiempopedidos
+	} else {
+		TiemposPedidos=tt
+	}
+
 
 	//esto debería ir después
 	for i,fila:=range(filas){

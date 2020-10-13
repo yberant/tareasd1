@@ -35,4 +35,3 @@ logistica:
     - csvordenes/
     - colas/
     - registroseguimiento/
-    

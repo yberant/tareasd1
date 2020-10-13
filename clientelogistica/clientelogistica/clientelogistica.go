@@ -115,7 +115,7 @@ func(cls *Cliente_Logistica_Server)SolicitarEstado(ctx context.Context, seguimie
 	codigoseg:=seguimiento.GetCodigoSeguimiento()
 
 	if codigoseg==0{
-		return &Estado{Estado:"su producto no tiene codigo de seguimiento porque es de retail"}, nil
+		return &Estado{Estado:"No disponible"}, nil
 	}
 
 	for _,seg:=range(*(cls.RegistrosSeguimientos)){
@@ -125,5 +125,5 @@ func(cls *Cliente_Logistica_Server)SolicitarEstado(ctx context.Context, seguimie
 		}
 	}
 	
-	return &Estado{Estado:"producto no encontrado"}, nil
+	return &Estado{Estado:"No encontrado"}, nil
 }

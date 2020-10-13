@@ -12,6 +12,8 @@ import (
 	csvo "../csvordenes"
 	colas "../colas"
 	registroseguimiento "../registroseguimiento"
+	financieroLogistica "../financierologistica"
+	"github.com/streadway/amqp"
     //"strings"
 )
 
@@ -23,6 +25,7 @@ var(
 	colasPaquetes colas.Colas
 	csvOrdenes csvo.CSVOrdenes
 	registrosSeguimientos []registroseguimiento.RegistroSeguimiento
+	rabbitSender financieroLogistica.RabbitSender
 )
 
 
@@ -45,8 +48,6 @@ func getIPAddr() string{
 }
 
 func ListenClientes(clientPort int){
-	
-	
 	portstring:=":"+strconv.Itoa(clientPort)//por ejemplo, ":9000"
 	lis, err := net.Listen("tcp", portstring)
 	if err!=nil{
@@ -76,9 +77,7 @@ func ListenClientes(clientPort int){
 		log.Fatalf("No se pudo servir en grpc en el puerto: %s; %v",portstring, err)
 	} else {
 		fmt.Println("Servidor comunicandose con cliente")
-	}	
-	
-	
+	}		
 }
 
 func EscucharCamion (camionPort int, camionCount int){
@@ -94,6 +93,7 @@ func EscucharCamion (camionPort int, camionCount int){
 		CamionCount: camionCount, 
 		ColasPaquetes: &colasPaquetes,
 		RegistrosSeguimientos:&registrosSeguimientos,
+		RabbitSender:&rabbitSender,
 	}
 
 
@@ -133,7 +133,25 @@ func AñadirCamion(camionCount int){
 }
 //func listenCamiones(){...}
 
+func SetearRabbitSender(IPAddr string)(*amqp.Connection){
+	conn, err := amqp.Dial("amqp://user:pass@"+IPAddr+":5672/")
+	if err != nil {
+		log.Fatalf("failed to connect to rabbitMq: %s", err)
+	}
+	//defer conn.Close()
 
+	ch, err := conn.Channel()
+	if err != nil {
+		log.Fatalf("failed to open a channel: %s", err)
+	}
+	//defer ch.Close()
+
+
+	rabbitSender.DeclareChannel(ch)
+	rabbitSender.DeclareQueue()
+	fmt.Println("cola de rabbitmq declarada")
+	return conn
+}
 
 func main(){
 	//creacion de csv
@@ -161,6 +179,10 @@ func main(){
 	IPAddr=getIPAddr()
 	//log.Println(IpAddr)
 	fmt.Println("dirección IP de logística: ",IPAddr)
+
+	c:=SetearRabbitSender(IPAddr)
+	defer c.Close()
+	defer rabbitSender.Close()
 
 	//se registran los 3 camiones
 	AñadirCamion(0)

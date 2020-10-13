@@ -58,7 +58,7 @@ func(csvo *CSVOrdenes) CrearArchivo(){
     nombresCols := []string{"Timestamp", "IDPaquete", "Tipo", "Nombre", "Valor", "Origen", "Destino","Seguimiento"}
 	
 	
-	fmt.Println("nombres cols:", nombresCols)
+	//fmt.Println("nombres cols:", nombresCols)
 	csvWriter := csv.NewWriter(file)
     csvWriter.Write(nombresCols)
     csvWriter.Flush()

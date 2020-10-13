@@ -4,6 +4,7 @@ import(
 	context "context"
 	colas "../../colas"
 	registroseguimiento "../../registroseguimiento"
+	financieroLogistica "../../financierologistica"
 	"fmt"
 	"time"
 	//"golang.org/x/net/context"
@@ -22,6 +23,7 @@ type Camion_Logistica_Server struct{
 	CamionCount int
 	ColasPaquetes *colas.Colas
 	RegistrosSeguimientos *[]registroseguimiento.RegistroSeguimiento
+	RabbitSender *financieroLogistica.RabbitSender
 }
 
 func (cls *Camion_Logistica_Server) ReportarIntento(ctx context.Context,paquete *Paquete) (*Ok, error){
@@ -82,9 +84,32 @@ func ColaspaqToPaq(colasPaq colas.Paquete)(Paquete){
 	}
 }
 
+func (cls *Camion_Logistica_Server) EnviarInfoFinanciero(tipoCamion string, paquete *Paquete){
+	fmt.Println("enviando paquete: ",paquete, "a registro")
+
+	msg:=financieroLogistica.Message{
+		"Tipo Camion":tipoCamion,
+		"ID Paquete":paquete.GetIDPaquete(),
+		"Tipo Paquete":paquete.GetTipo(),
+		"Estado Final":paquete.GetEstado(),//entregado vs no entregado
+		"Intentos Totales":paquete.GetIntentos(),
+		"Valor producto":paquete.GetValorProducto(),
+	}
+	fmt.Println("bbb")
+	cls.RabbitSender.Publish(msg)
+	fmt.Println("ccc")
+
+}
+
 func (cls *Camion_Logistica_Server) AsignarPaquetes(ctx context.Context,parpaquetes *ParPaquetes) (*ParPaquetes, error){
-	
-	
+	if(parpaquetes.GetPaquete1().GetIDPaquete()!=""){
+		cls.EnviarInfoFinanciero(parpaquetes.Camion.GetTipoCamion(),parpaquetes.Paquete1)
+	}
+	if(parpaquetes.GetPaquete2().GetIDPaquete()!=""){
+		cls.EnviarInfoFinanciero(parpaquetes.Camion.GetTipoCamion(),parpaquetes.Paquete2)
+	}
+
+
 	
 	var PaqRes1,PaqRes2 Paquete
 
@@ -176,6 +201,8 @@ func (cls *Camion_Logistica_Server) AsignarPaquetes(ctx context.Context,parpaque
 
 	cls.RegistrarEntrega(parpaquetes.Camion.IDCamion,&PaqRes2)
 	cls.ReportarIntento(context.Background(),&PaqRes2)
+
+	fmt.Println("asignados paquetes a camion: ",parpaquetes.Camion.IDCamion)
 
 	return &ParPaquetes{Paquete1:&PaqRes1, Paquete2:&PaqRes2, Camion:parpaquetes.GetCamion()}, nil
 }

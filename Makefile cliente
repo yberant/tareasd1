@@ -1,2 +1,2 @@
-cliente:
+run:
 	go run cliente/cliente.go

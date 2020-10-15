@@ -11,7 +11,7 @@ Distribución de "servicios" por máquina virtual
 - Camión: root@dist91
 - Financiero: root@dist92
 
-Para echar a andar cada servicio, se debe ejecutar "make run" desde el directorio
+Para echar a andar cada servicio, se debe ejecutar el comando "make run" desde el directorio
 en el que se encuentra su MakeFile (el cual es el mismo directorio en el que se
 encuentra este readme) en su respectiva máquina virtual
 
@@ -42,17 +42,23 @@ Demás está decir que todos los números de puerto ingresados obviamente deben 
 
 Una vez ingresados los números de puerto, será posible conectar a logística camiones y clientes
 
-2- Financiero...
+2- Financiero
+Ejecute el servicio financiero, ingrese la dirección IP de logística (el número de puerto ya está seleccionado: 5672) y el servicio escuchará a la cola de RabbitMq. 
+
+Cada vez que el servicio financiero reciba información de un paquete recibido o no recibido calculará la ganancia/pérdida y los costos (según el número de reintentos) asignados a la entrega, actualizando el archivo "finanzas.csv", localizado en la carpeta "financiero", en la máquina del servicio.
 
 3- Para ingresar a un camión, se debe ejecutar un servicio de camión. Por pantalla se pedirá ingresar la dirección de IP de logística y uno de los números de puerto en el que se está escuchando a un camión.
-Estos números de puerto debieron ser ya ingresados a logística previamente. Según el número de puerto se le asignará al camión su tipo ("normal" o "retail") y su ID ("CamionA"(normal), "CamionB"(retail) o "CamionC"(retail))
+Estos números de puerto debieron ser ya ingresados a logística previamente (ver paso 1). Según el número de puerto se le asignará al camión su tipo ("normal" o "retail") y su ID ("CamionA"(normal), "CamionB"(retail) o "CamionC"(retail))
 
 Luego de que se establesca exitosamente la conexión entre un camión y logística, se creará un archivo csv  en la carpeta "camion" de nombre "registro<ID Camion>.csv" (obviamente en la máquina donde se encuentra el servicio de camión) con sus registros.
 
 Se pedirá desde la consola del camión que se ingrese su tiempo de espera (cuanto se demora en intentar entregar un paquete y cuanto espera a un segundo paquete en logística)
 
 4- Para ingresar un cliente se debe ejecutar un servicio de cliente
-Primero se pedirá el tipo de cliente, para eso debe ingresarse por consola las opciones "0", "1" y "2":
+
+Primero se pedirá ingresar la dirección IP del servicio de logística y un número de puerto desde el cual logistica esta escuchando a un cliente, que previamente debió haber sido ingresado a logística con el comando "listen" a logística (ver paso 1). 
+
+Luego se pedirá el tipo de cliente, para eso debe ingresarse por consola las opciones "0", "1" y "2":
  * "0" (Pyme): si se elige esta opción, el servicio realizará pedidos de tipo pyme, desde el archivo pymes.csv.
  * "1" (Retail) si se elige esta opción, el servicio realizará pedidos de tipo retail, desde el archivo retail.csv.
  * "2" (Seguidor) si se elige esta opción, el servicio ofrecerá la opción de solicitar estados de productos, ingresando por consola sus codigos de seguimiento.

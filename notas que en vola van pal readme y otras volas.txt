@@ -35,3 +35,7 @@ logistica:
     - csvordenes/
     - colas/
     - registroseguimiento/
+    - financierologistica/
+
+financiero:
+    - financiero/

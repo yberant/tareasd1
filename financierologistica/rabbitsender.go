@@ -53,7 +53,7 @@ func (rs *RabbitSender) Close(){
 func(rs *RabbitSender) DeclareQueue(){
 //declare queue
 	q, err := rs.channel.QueueDeclare(
-		"hello", // name
+		"finanzas", // name
 		false,   // durable
 		false,   // delete when unused
 		false,   // exclusive

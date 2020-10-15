@@ -6,7 +6,7 @@ import(
 	colas "../../colas"
 	registroseguimiento "../../registroseguimiento"
 	"time"
-	"fmt"
+	//"fmt"
 
 )
 
@@ -21,7 +21,7 @@ type Cliente_Logistica_Server struct{
 
 func(cls *Cliente_Logistica_Server)HacerPedido(ctx context.Context, pedido *Pedido) (*Seguimiento, error){
 	
-	fmt.Println("/npedido recibido a logistica: ",pedido)
+	//fmt.Println("/npedido recibido a logistica: ",pedido)
 
 	//crear codigo de seguimiento
 	var codigoSeguimiento int
@@ -71,16 +71,16 @@ func(cls *Cliente_Logistica_Server)HacerPedido(ctx context.Context, pedido *Pedi
 	//ingresar a la cola
 	switch paquete.Tipo{
 	case "Normal":
-		fmt.Println("agregando a cola normal")
+		//fmt.Println("agregando a cola normal")
 		(*(*(*cls).ColasPedidos).ColaNormal)=append((*(*(*cls).ColasPedidos).ColaNormal),paquete)
 	case "Prioritario":
-		fmt.Println("agregando a cola prioritaria")
+		//fmt.Println("agregando a cola prioritaria")
 		(*(*(*cls).ColasPedidos).ColaPrioritaria)=append((*(*(*cls).ColasPedidos).ColaPrioritaria),paquete)
 	case "Retail":
 		//fmt.Println("agregando a cola retail")
 		(*(*(*cls).ColasPedidos).ColaRetail)=append((*(*(*cls).ColasPedidos).ColaRetail),paquete)
 	}
-	cls.ImprimirColas()
+	//cls.ImprimirColas()
 
 
 	//ingresar al csv, una orden nueva:
@@ -100,7 +100,7 @@ func(cls *Cliente_Logistica_Server)HacerPedido(ctx context.Context, pedido *Pedi
 	//fmt.Println("registro csv actualizado")
 
 	//retornar codigo de seguimiento
-	fmt.Println("retornando codigo de seguimiento: ",codigoSeguimiento)
+	//fmt.Println("retornando codigo de seguimiento: ",codigoSeguimiento)
 	return &Seguimiento{CodigoSeguimiento:int64(codigoSeguimiento)}, nil
 }
 

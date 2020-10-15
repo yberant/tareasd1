@@ -5,7 +5,7 @@ import(
 	colas "../../colas"
 	registroseguimiento "../../registroseguimiento"
 	financieroLogistica "../../financierologistica"
-	"fmt"
+	//"fmt"
 	"time"
 	//"golang.org/x/net/context"
 	//"golang.org/x/net/context"
@@ -33,7 +33,7 @@ func (cls *Camion_Logistica_Server) ReportarIntento(ctx context.Context,paquete 
 			(*cls.RegistrosSeguimientos)[i].Estado=paquete.GetEstado()
 			(*cls.RegistrosSeguimientos)[i].CantidadIntentos=int(paquete.GetIntentos())
 			//TODO: COMUNICAR A FINANCIERO POR RABBITMQ!!!
-			fmt.Println("registros actualizados: ",(*cls.RegistrosSeguimientos))
+			//fmt.Println("registros actualizados: ",(*cls.RegistrosSeguimientos))
 			break
 
 		}
@@ -85,7 +85,7 @@ func ColaspaqToPaq(colasPaq colas.Paquete)(Paquete){
 }
 
 func (cls *Camion_Logistica_Server) EnviarInfoFinanciero(tipoCamion string, paquete *Paquete){
-	fmt.Println("enviando paquete: ",paquete, "a registro")
+	//fmt.Println("enviando paquete: ",paquete, "a registro")
 
 	msg:=financieroLogistica.Message{
 		"Tipo Camion":tipoCamion,
@@ -95,9 +95,7 @@ func (cls *Camion_Logistica_Server) EnviarInfoFinanciero(tipoCamion string, paqu
 		"Intentos Totales":paquete.GetIntentos(),
 		"Valor producto":paquete.GetValorProducto(),
 	}
-	fmt.Println("bbb")
 	cls.RabbitSender.Publish(msg)
-	fmt.Println("ccc")
 
 }
 
@@ -202,7 +200,7 @@ func (cls *Camion_Logistica_Server) AsignarPaquetes(ctx context.Context,parpaque
 	cls.RegistrarEntrega(parpaquetes.Camion.IDCamion,&PaqRes2)
 	cls.ReportarIntento(context.Background(),&PaqRes2)
 
-	fmt.Println("asignados paquetes a camion: ",parpaquetes.Camion.IDCamion)
+	//fmt.Println("asignados paquetes a camion: ",parpaquetes.Camion.IDCamion)
 
 	return &ParPaquetes{Paquete1:&PaqRes1, Paquete2:&PaqRes2, Camion:parpaquetes.GetCamion()}, nil
 }

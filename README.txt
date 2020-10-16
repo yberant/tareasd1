@@ -2,8 +2,8 @@ NOTA: ESTE MISMO README ESTARÁ PRESENTE EN TODAS LAS MÁQUINAS
 
 Nombre equipo: "pero ella me levantó"
 Integrantes:
-- Diego Valderas
-- Yoel Berant
+- Diego Valderas, rol:201673549-6
+- Yoel Berant, rol:201604519-8
 
 Distribución de "servicios" por máquina virtual
 - Logística: root@dist89

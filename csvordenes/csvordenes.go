@@ -4,7 +4,7 @@ import(
 	"encoding/csv"
 	"os"
 	"log"
-	"fmt"
+	//"fmt"
 	"strconv"
 )
 
@@ -27,11 +27,11 @@ type CSVOrdenes struct {
 //retorna las filas
 func(csvo *CSVOrdenes) LeerTexto() [][] string {
 
-	path, err := os.Getwd()
+	/*path, err := os.Getwd()
 	if err != nil {
     	log.Println(err)
 	}
-	fmt.Println(path) 
+	fmt.Println(path)*/ 
 
 	f, err := os.Open(csvo.FileName)
 	if err !=nil {

@@ -1,21 +1,21 @@
 Timestamp,IDPaquete,Tipo,Nombre,Valor,Origen,Destino,Seguimiento
-15-Oct-2020 10:41PM,SA1554KF,Retail,Polera,10,tienda-A,casa-A,0
-15-Oct-2020 10:41PM,SA1684AH,Retail,Pantalón,12,tienda-B,casa-B,0
-15-Oct-2020 10:41PM,SA5698PO,Retail,Televisor,110,tienda-C,casa-C,0
-15-Oct-2020 10:41PM,SA5897AS,Retail,Consola de Videojuegos,95,tienda-A,casa-D,0
-15-Oct-2020 10:41PM,SA1589GD,Retail,Lavadora,100,tienda-B,casa-Q,0
-15-Oct-2020 10:41PM,SA8859SS,Retail,Polerón,15,tienda-C,casa-A,0
-15-Oct-2020 10:41PM,SA5713AS,Retail,Parca,20,tienda-B,casa-C,0
-15-Oct-2020 10:41PM,SA2589TR,Retail,Pelota,5,tienda-C,casa-P,0
-15-Oct-2020 10:41PM,SA1597EF,Retail,Raqueta,20,tienda-A,casa-F,0
-15-Oct-2020 10:41PM,SA3574FG,Retail,Refrigerador,120,tienda-B,casa-U,0
-15-Oct-2020 10:41PM,SA3698HJ,Retail,Tostador,25,tienda-C,casa-A,0
-15-Oct-2020 10:41PM,SA2563AS,Retail,Perfume,15,tienda-A,casa-N,0
-15-Oct-2020 10:41PM,SA1937JH,Retail,Tobillera,6,tienda-C,casa-N,0
-15-Oct-2020 10:41PM,SA5648AA,Retail,Notebook,80,tienda-B,casa-A,0
-15-Oct-2020 10:41PM,SA6947GH,Retail,Set de ollas,50,tienda-C,casa-C,0
-15-Oct-2020 10:41PM,SA5588HJ,Retail,Parlante,25,tienda-C,casa-E,0
-15-Oct-2020 10:41PM,SA6644DS,Retail,Lampara,30,tienda-A,casa-A,0
-15-Oct-2020 10:41PM,SA5974AA,Retail,Sillón,105,tienda-C,casa-C,0
-15-Oct-2020 10:41PM,SA2596NH,Retail,Mesa,90,tienda-A,casa-S,0
-15-Oct-2020 10:41PM,SA7748JK,Retail,Cama,115,tienda-B,casa-A,0
+15-Oct-2020 11:26PM,BE127,Prioritario,Secador de pelo,15,tienda-K,casa-K,1
+15-Oct-2020 11:26PM,BE666,Prioritario,Jabón para la ducha,8,tienda-A,casa-A,2
+15-Oct-2020 11:26PM,BE855,Normal,Acondicionador,10,tienda-A,casa-A,3
+15-Oct-2020 11:26PM,BE654,Normal,Shampoo,10,tienda-D,casa-D,4
+15-Oct-2020 11:26PM,BE785,Prioritario,Crema para peinar,8,tienda-E,casa-E,5
+15-Oct-2020 11:26PM,PF654,Prioritario,Placa madre,50,tienda-B,casa-B,6
+15-Oct-2020 11:26PM,PF125,Normal,Procesador R,75,tienda-N,casa-N,7
+15-Oct-2020 11:26PM,PF111,Prioritario,Ventilador,10,tienda-N,casa-N,8
+15-Oct-2020 11:26PM,PF245,Normal,Gabinete,20,tienda-S,casa-S,9
+15-Oct-2020 11:26PM,PF225,Prioritario,Fuente de poder,25,tienda-P,casa-P,10
+15-Oct-2020 11:26PM,PF354,Normal,Memoria RAM,22,tienda-R,casa-R,11
+15-Oct-2020 11:26PM,PF542,Normal,Procesador I,90,tienda-N,casa-N,12
+15-Oct-2020 11:26PM,PF452,Prioritario,Tarjeta de video,115,tienda-I,casa-I,13
+15-Oct-2020 11:26PM,OF352,Prioritario,Set de plumones,9,tienda-C,casa-C,14
+15-Oct-2020 11:26PM,OF754,Normal,Cuadernos,5,tienda-C,casa-C,15
+15-Oct-2020 11:26PM,OF554,Normal,Lapices,4,tienda-I,casa-I,16
+15-Oct-2020 11:26PM,DE123,Normal,Zapatillas de futbol,16,tienda-E,casa-E,17
+15-Oct-2020 11:26PM,DE654,Prioritario,Pelota de futbol,11,tienda-V,casa-V,18
+15-Oct-2020 11:26PM,DE786,Prioritario,Raqueta de tenis,15,tienda-Z,casa-Z,19
+15-Oct-2020 11:26PM,DE245,Prioritario,Palo de golf,18,tienda-Y,casa-Y,20

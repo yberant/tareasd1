@@ -1,1 +1,13 @@
 ID-Paquete,Tipo de Paquete,Valor Paquete,Origen,Destino,Numero de Intentos,Fecha de Entrega
+BE127,Prioritario,15,tienda-K,casa-K,1,"15-10-2020 11:26
+"
+BE666,Prioritario,8,tienda-A,casa-A,1,"15-10-2020 11:26
+"
+PF654,Prioritario,50,tienda-B,casa-B,1,"15-10-2020 11:26
+"
+BE785,Prioritario,8,tienda-E,casa-E,2,"15-10-2020 11:26
+"
+PF225,Prioritario,25,tienda-P,casa-P,1,"15-10-2020 11:26
+"
+PF111,Prioritario,10,tienda-N,casa-N,2,"15-10-2020 11:26
+"

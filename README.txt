@@ -6,8 +6,8 @@ Integrantes:
 - Yoel Berant
 
 Distribución de "servicios" por máquina virtual
-- Cliente: root@dist90
 - Logística: root@dist89
+- Cliente: root@dist90
 - Camión: root@dist91
 - Financiero: root@dist92
 

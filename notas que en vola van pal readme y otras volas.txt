@@ -18,9 +18,9 @@ camion:
     - camionlogistica/
     - registroseguimiento/
     - colas/
-    - ???
+    - financierologistica/
 
-cliete:
+cliente:
     - cliente/
     - clientelogistica/
     - csvventas/

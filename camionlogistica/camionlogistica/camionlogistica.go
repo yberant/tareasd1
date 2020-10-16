@@ -189,7 +189,6 @@ func (cls *Camion_Logistica_Server) AsignarPaquetes(ctx context.Context,parpaque
 			}
 			//paq2. solo retail
 			for start := time.Now(); time.Since(start) < time.Duration(parpaquetes.Camion.TiempoEspera)*time.Second;{
-				
 				mutex.Lock()
 				if len(*((*(cls.ColasPaquetes)).ColaRetail))>=1{
 					PaqRes2,*((*(cls.ColasPaquetes)).ColaRetail)=ColaspaqToPaq((*((*(cls.ColasPaquetes)).ColaRetail))[0]), (*((*(cls.ColasPaquetes)).ColaRetail))[1:]

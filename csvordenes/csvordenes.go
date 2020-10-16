@@ -68,13 +68,13 @@ func(csvo *CSVOrdenes) AñadirOrden(orden Orden) {
 	//filas:=csvo.LeerTexto()
 	filaOrden:=[]string{orden.TimeStamp,orden.IDPaquete,orden.Tipo,orden.Nombre,strconv.Itoa(int(orden.Valor)),orden.Origen,orden.Destino,strconv.Itoa(orden.Seguimiento)}
 	
-	dir, err := os.Getwd()
+	/*dir, err := os.Getwd()
 	if err != nil {
 		log.Fatal(err)
-	}
-	fmt.Println("escribiendo desde: ",dir)
+	}*/
+	//fmt.Println("escribiendo desde: ",dir)
 
-	fmt.Println("archivo: ",csvo.FileName)
+	//fmt.Println("archivo: ",csvo.FileName)
     
 	file, err:=os.OpenFile(csvo.FileName,os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
 
@@ -85,7 +85,9 @@ func(csvo *CSVOrdenes) AñadirOrden(orden Orden) {
 	csvWriter:=csv.NewWriter(file)
 	csvWriter.Write(filaOrden)
 	
-    csvWriter.Flush()
+	csvWriter.Flush()
+	
+	//fmt.Println("escrito")
 	
 
 

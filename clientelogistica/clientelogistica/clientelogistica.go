@@ -6,8 +6,7 @@ import(
 	colas "../../colas"
 	registroseguimiento "../../registroseguimiento"
 	"time"
-	//"fmt"
-
+	"fmt"
 )
 
 
@@ -45,7 +44,8 @@ func(cls *Cliente_Logistica_Server)HacerPedido(ctx context.Context, pedido *Pedi
 		Origen: pedido.GetOrigen(),
 		CodigoSeguimiento: codigoSeguimiento,
 	}
-	//fmt.Println("paquete: ",paquete)
+	//fmt.Println("paquete creado:",paquete)
+	//fmt.Println("creando registro seguimiento ")
 
 	
 	
@@ -59,11 +59,11 @@ func(cls *Cliente_Logistica_Server)HacerPedido(ctx context.Context, pedido *Pedi
 	}
 
 
-	//fmt.Println("agregando a registros de seguimientos")
+	fmt.Println("agregando a registros")
 	*(cls.RegistrosSeguimientos)=append(*(cls.RegistrosSeguimientos), registroSeguimiento)
 	//fmt.Println("registro de seguimientos:",*(cls.RegistrosSeguimientos))
 
-	//fmt.Println("agregando a colas")
+	fmt.Println("agregando a colas")
 	//fmt.Println((*cls.ColasPedidos).ColaNormal)
 	//fmt.Println(cls.ColasPedidos)
 
@@ -71,16 +71,18 @@ func(cls *Cliente_Logistica_Server)HacerPedido(ctx context.Context, pedido *Pedi
 	//ingresar a la cola
 	switch paquete.Tipo{
 	case "Normal":
-		//fmt.Println("agregando a cola normal")
+		//fmt.Println("(cli)agregando a cola normal")
 		(*(*(*cls).ColasPedidos).ColaNormal)=append((*(*(*cls).ColasPedidos).ColaNormal),paquete)
 	case "Prioritario":
-		//fmt.Println("agregando a cola prioritaria")
+		//fmt.Println("(cli)agregando a cola prioritaria")
 		(*(*(*cls).ColasPedidos).ColaPrioritaria)=append((*(*(*cls).ColasPedidos).ColaPrioritaria),paquete)
 	case "Retail":
-		//fmt.Println("agregando a cola retail")
+		//fmt.Println("(cli)agregando a cola retail")
 		(*(*(*cls).ColasPedidos).ColaRetail)=append((*(*(*cls).ColasPedidos).ColaRetail),paquete)
 	}
-	//cls.ImprimirColas()
+	
+	//fmt.Println("cola retail: ",*(*(*cls).ColasPedidos).ColaRetail)
+
 
 
 	//ingresar al csv, una orden nueva:
@@ -95,12 +97,13 @@ func(cls *Cliente_Logistica_Server)HacerPedido(ctx context.Context, pedido *Pedi
 		Destino: pedido.GetDestino(),
 		Seguimiento: codigoSeguimiento,
 	}
-
+	//fmt.Println("añadiendo orden")
 	cls.CsvOrdenes.AñadirOrden(orden)
 	//fmt.Println("registro csv actualizado")
 
 	//retornar codigo de seguimiento
 	//fmt.Println("retornando codigo de seguimiento: ",codigoSeguimiento)
+	//fmt.Println("retornando codigo de seguimiento: ",int64(codigoSeguimiento))
 	return &Seguimiento{CodigoSeguimiento:int64(codigoSeguimiento)}, nil
 }
 

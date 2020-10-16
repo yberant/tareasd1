@@ -7,6 +7,7 @@ import(
 	financieroLogistica "../../financierologistica"
 	//"fmt"
 	"time"
+	"sync"
 	//"golang.org/x/net/context"
 	//"golang.org/x/net/context"
 	//"log"
@@ -99,6 +100,8 @@ func (cls *Camion_Logistica_Server) EnviarInfoFinanciero(tipoCamion string, paqu
 
 }
 
+var mutex = &sync.Mutex{}
+
 func (cls *Camion_Logistica_Server) AsignarPaquetes(ctx context.Context,parpaquetes *ParPaquetes) (*ParPaquetes, error){
 	if(parpaquetes.GetPaquete1().GetIDPaquete()!=""){
 		cls.EnviarInfoFinanciero(parpaquetes.Camion.GetTipoCamion(),parpaquetes.Paquete1)
@@ -144,6 +147,7 @@ func (cls *Camion_Logistica_Server) AsignarPaquetes(ctx context.Context,parpaque
 		if(parpaquetes.GetPaquete1().GetTipo()=="Prioritario"||parpaquetes.GetPaquete2().GetTipo()=="Prioritario"){
 			//1er paquete
 			for{
+				mutex.Lock()
 				//cola retail tiene prioridad
 				if len(*((*(cls.ColasPaquetes)).ColaRetail))>=1{
 					PaqRes1,*((*(cls.ColasPaquetes)).ColaRetail)=ColaspaqToPaq((*((*(cls.ColasPaquetes)).ColaRetail))[0]), (*((*(cls.ColasPaquetes)).ColaRetail))[1:]
@@ -155,9 +159,11 @@ func (cls *Camion_Logistica_Server) AsignarPaquetes(ctx context.Context,parpaque
 					PaqRes1,*((*(cls.ColasPaquetes)).ColaPrioritaria)=ColaspaqToPaq((*((*(cls.ColasPaquetes)).ColaPrioritaria))[0]), (*((*(cls.ColasPaquetes)).ColaPrioritaria))[1:]
 					break
 				}
+				mutex.Unlock()
 			}
 			//2do paquete
 			for start := time.Now(); time.Since(start) < time.Duration(parpaquetes.Camion.TiempoEspera)*time.Second;{
+				mutex.Lock()
 				//cola retail tiene prioridad
 				if len(*((*(cls.ColasPaquetes)).ColaRetail))>=1{
 					PaqRes2,*((*(cls.ColasPaquetes)).ColaRetail)=ColaspaqToPaq((*((*(cls.ColasPaquetes)).ColaRetail))[0]), (*((*(cls.ColasPaquetes)).ColaRetail))[1:]
@@ -169,21 +175,27 @@ func (cls *Camion_Logistica_Server) AsignarPaquetes(ctx context.Context,parpaque
 					PaqRes2,*((*(cls.ColasPaquetes)).ColaPrioritaria)=ColaspaqToPaq((*((*(cls.ColasPaquetes)).ColaPrioritaria))[0]), (*((*(cls.ColasPaquetes)).ColaPrioritaria))[1:]
 					break
 				}
+				mutex.Unlock()
 			}	
 		} else {
 			//paq1. solo retail
 			for{
+				mutex.Lock()
 				if len(*((*(cls.ColasPaquetes)).ColaRetail))>=1{
 					PaqRes1,*((*(cls.ColasPaquetes)).ColaRetail)=ColaspaqToPaq((*((*(cls.ColasPaquetes)).ColaRetail))[0]), (*((*(cls.ColasPaquetes)).ColaRetail))[1:]
 					break
 				}
+				mutex.Unlock()
 			}
 			//paq2. solo retail
 			for start := time.Now(); time.Since(start) < time.Duration(parpaquetes.Camion.TiempoEspera)*time.Second;{
+				
+				mutex.Lock()
 				if len(*((*(cls.ColasPaquetes)).ColaRetail))>=1{
 					PaqRes2,*((*(cls.ColasPaquetes)).ColaRetail)=ColaspaqToPaq((*((*(cls.ColasPaquetes)).ColaRetail))[0]), (*((*(cls.ColasPaquetes)).ColaRetail))[1:]
 					break
 				}
+				mutex.Unlock()
 			}
 		}
 	}
